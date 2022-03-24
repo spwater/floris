@@ -118,7 +118,7 @@ def line_contour_cut_plane(cut_plane, ax=None, levels=None, colors=None, **kwarg
 
 
 def visualize_cut_plane(
-    cut_plane, ax=None, minSpeed=None, maxSpeed=None, cmap="coolwarm", levels=None, title = None
+    cut_plane, alpha=1, line=False, ax=None, minSpeed=None, maxSpeed=None, cmap="coolwarm", levels=None
 ):
     """
     Generate pseudocolor mesh plot of the cut_plane.
@@ -134,7 +134,6 @@ def visualize_cut_plane(
             contours. Defaults to None.
         cmap (str, optional): Colormap specifier. Defaults to
             'coolwarm'.
-        title : Image title
 
     Returns:
         im (:py:class:`matplotlib.plt.pcolormesh`): Image handle.
@@ -161,19 +160,17 @@ def visualize_cut_plane(
 
     # Plot the cut-through
     im = ax.pcolormesh(
-        x1_mesh, x2_mesh, Zm, cmap=cmap, vmin=minSpeed, vmax=maxSpeed, shading="nearest"
+        x1_mesh, x2_mesh, Zm, alpha=alpha, cmap=cmap, vmin=minSpeed, vmax=maxSpeed, shading="nearest"
     )
 
     # Add line contour
-    line_contour_cut_plane(
-        cut_plane, ax=ax, levels=levels, colors="w", linewidths=0.8, alpha=0.3
-    )
+    if line:
+        line_contour_cut_plane(
+            cut_plane, ax=ax, levels=levels, colors="w", linewidths=0.8, alpha=1
+        )
 
     # Make equal axis
     ax.set_aspect("equal")
-    
-    # Make title
-    ax.set_title(title)
 
     # Return im
     return im
@@ -183,24 +180,24 @@ def visualize_quiver(
     cut_plane, ax=None, minSpeed=None, maxSpeed=None, downSamp=1, **kwargs
 ):
     """
-    Visualize the in-plane flows in a cut_plane using quiver.
+        Visualize the in-plane flows in a cut_plane using quiver.
 
-    Args:
-        cut_plane (:py:class:`~.tools.cut_plane.CutPlane`): 2D
-            plane through wind plant.
-        ax (:py:class:`matplotlib.pyplot.axes`): Figure axes. Defaults
-            to None.
-        minSpeed (float, optional): Minimum value of wind speed for
-            contours. Defaults to None.
-        maxSpeed (float, optional): Maximum value of wind speed for
-            contours. Defaults to None.
-        downSamp (int, optional): Down sample the number of quiver arrows
-            from underlying grid.
-        **kwargs: Additional parameters to pass to `ax.streamplot`.
+        Args:
+            cut_plane (:py:class:`~.tools.cut_plane.CutPlane`): 2D
+                plane through wind plant.
+            ax (:py:class:`matplotlib.pyplot.axes`): Figure axes. Defaults
+                to None.
+            minSpeed (float, optional): Minimum value of wind speed for
+                contours. Defaults to None.
+            maxSpeed (float, optional): Maximum value of wind speed for
+                contours. Defaults to None.
+            downSamp (int, optional): Down sample the number of quiver arrows
+                from underlying grid.
+            **kwargs: Additional parameters to pass to `ax.streamplot`.
 
-    Returns:
-        im (:py:class:`matplotlib.plt.pcolormesh`): Image handle.
-    """
+        Returns:
+            im (:py:class:`matplotlib.plt.pcolormesh`): Image handle.
+        """
     if not ax:
         fig, ax = plt.subplots()
 
@@ -229,7 +226,7 @@ def visualize_quiver(
         # **kwargs
     )
 
-    # ax.quiverkey(QV1, -.75, -0.4, 1, '1 m/s', coordinates='data')
+    # ax.quiverkey(QV1, -.75, -0.4, 1, '1 m/WindITWakePackage1.py', coordinates='data')
 
     # Make equal axis
     # ax.set_aspect('equal')
