@@ -118,12 +118,14 @@ def line_contour_cut_plane(cut_plane, ax=None, levels=None, colors=None, **kwarg
 
 
 def visualize_cut_plane(
-    cut_plane, ax=None, minSpeed=None, maxSpeed=None, cmap="coolwarm", levels=None, title = None
+    cut_plane, alpha=1, line=False, ax=None, minSpeed=None, maxSpeed=None, cmap="coolwarm", levels=None, title=None
 ):
     """
     Generate pseudocolor mesh plot of the cut_plane.
 
     Args:
+        alpha: transparency degree
+        line: show line contour or not
         cut_plane (:py:class:`~.tools.cut_plane.CutPlane`): 2D
             plane through wind plant.
         ax (:py:class:`matplotlib.pyplot.axes`): Figure axes. Defaults
@@ -161,13 +163,14 @@ def visualize_cut_plane(
 
     # Plot the cut-through
     im = ax.pcolormesh(
-        x1_mesh, x2_mesh, Zm, cmap=cmap, vmin=minSpeed, vmax=maxSpeed, shading="nearest"
+        x1_mesh, x2_mesh, Zm, alpha=alpha, cmap=cmap, vmin=minSpeed, vmax=maxSpeed, shading="nearest"
     )
 
     # Add line contour
-    line_contour_cut_plane(
-        cut_plane, ax=ax, levels=levels, colors="w", linewidths=0.8, alpha=0.3
-    )
+    if line:
+        line_contour_cut_plane(
+            cut_plane, ax=ax, levels=levels, colors="w", linewidths=0.8, alpha=1
+        )
 
     # Make equal axis
     ax.set_aspect("equal")
